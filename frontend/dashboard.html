@@ -1,0 +1,1948 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LifeDrop - User Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      color: #17202a;
+    }
+
+    nav {
+      height: 70px;
+      background: white;
+      border-bottom: 1px solid #e5e9ef;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 7%;
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: 800;
+      color: #c6283d;
+    }
+
+    .logout {
+      background: #c6283d;
+      color: white;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 9px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .logout:hover {
+      background: #a91f32;
+    }
+
+    .container {
+      width: 86%;
+      max-width: 1200px;
+      margin: 35px auto;
+    }
+
+    .welcome {
+      background: linear-gradient(135deg, #c6283d, #8d182c);
+      color: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 25px;
+    }
+
+    .welcome h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    .welcome p {
+      margin: 0;
+      opacity: 0.9;
+    }
+
+    .profile {
+      background: white;
+      border: 1px solid #e5e9ef;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 25px;
+    }
+
+    .profile h2 {
+      margin-top: 0;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .profile-item {
+      background: #f7f9fc;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .profile-item strong {
+      display: block;
+      font-size: 13px;
+      color: #65707d;
+      margin-bottom: 5px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e5e9ef;
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .card.emergency {
+      border: 2px solid #e53935;
+    }
+
+    .card.donor {
+      border: 2px solid #198754;
+    }
+
+    .icon {
+      font-size: 32px;
+    }
+
+    .card h3 {
+      margin: 12px 0 8px;
+    }
+
+    .card p {
+      color: #65707d;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .btn {
+      border: none;
+      background: #c6283d;
+      color: white;
+      padding: 11px 15px;
+      border-radius: 9px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #a91f32;
+    }
+
+    .btn.green {
+      background: #198754;
+    }
+
+    .btn.green:hover {
+      background: #146c43;
+    }
+
+    .btn.danger {
+      background: #e53935;
+    }
+
+    .btn.danger:hover {
+      background: #c62828;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    .section h2 {
+      margin-bottom: 15px;
+    }
+
+    .hospital {
+      background: white;
+      border: 1px solid #e5e9ef;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    .hospital h3 {
+      margin-top: 0;
+    }
+
+    .hospital p {
+      color: #65707d;
+      line-height: 1.5;
+    }
+
+    .map-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #198754;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .form-card {
+      background: white;
+      border: 1px solid #e5e9ef;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccd3dc;
+      border-radius: 9px;
+      font-size: 15px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #c6283d;
+    }
+
+    .form-group textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .required {
+      color: #c6283d;
+    }
+
+    .suggestion-box {
+      position: relative;
+    }
+
+    .hospital-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #d9dee5;
+      border-top: none;
+      border-radius: 0 0 9px 9px;
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .hospital-suggestion {
+      padding: 11px 13px;
+      cursor: pointer;
+      border-bottom: 1px solid #f0f1f3;
+    }
+
+    .hospital-suggestion:hover {
+      background: #f7f9fc;
+    }
+
+    .hospital-suggestion strong {
+      display: block;
+    }
+
+    .hospital-suggestion small {
+      color: #65707d;
+    }
+
+    .status-message {
+      display: none;
+      padding: 13px;
+      border-radius: 9px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .status-success {
+      display: block;
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    .status-error {
+      display: block;
+      background: #f8d7da;
+      color: #842029;
+    }
+
+    .urgent-note {
+      background: #fff3f3;
+      border-left: 4px solid #e53935;
+      padding: 13px;
+      margin-bottom: 18px;
+      color: #7f1d1d;
+      border-radius: 5px;
+    }
+
+    .empty {
+      background: white;
+      border: 1px solid #e5e9ef;
+      padding: 20px;
+      border-radius: 14px;
+      color: #65707d;
+    }
+
+    .tracking-card { background:white; border:1px solid #e5e9ef; border-radius:14px; padding:18px; margin-bottom:12px; }
+    .tracking-head { display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:10px; }
+    .tracking-meta { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:12px; }
+    .tracking-meta div { background:#f7f9fc; padding:9px 10px; border-radius:8px; font-size:13px; }
+    .tracking-meta strong { display:block; color:#65707d; font-size:11px; margin-bottom:3px; }
+    .status-pill { display:inline-block; padding:6px 10px; border-radius:999px; background:#fff3cd; color:#664d03; font-size:12px; font-weight:800; }
+    .status-note { margin-top:10px; padding:10px; background:#f7f9fc; border-radius:8px; color:#495057; font-size:13px; }
+
+    @media (max-width: 1000px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      nav {
+        padding: 0 5%;
+      }
+
+      .container {
+        width: 90%;
+      }
+
+      .profile-grid,
+      .form-grid,
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .welcome h1 {
+        font-size: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+  <div class="brand">🩸 LifeDrop</div>
+
+  <button class="logout" onclick="logout()">
+    Logout
+  </button>
+</nav>
+
+
+<div class="container">
+
+  <!-- WELCOME -->
+
+  <div class="welcome">
+    <h1>
+      Welcome, <span id="userName">User</span> 👋
+    </h1>
+
+    <p>
+      Your LifeDrop blood bank dashboard
+    </p>
+  </div>
+
+
+  <!-- USER PROFILE -->
+
+  <div class="profile">
+
+    <h2>My Profile</h2>
+
+    <div class="profile-grid">
+
+      <div class="profile-item">
+        <strong>Full Name</strong>
+        <span id="profileName">-</span>
+      </div>
+
+      <div class="profile-item">
+        <strong>Email</strong>
+        <span id="profileEmail">-</span>
+      </div>
+
+      <div class="profile-item">
+        <strong>Phone</strong>
+        <span id="profilePhone">Not added</span>
+      </div>
+
+      <div class="profile-item">
+        <strong>Blood Group</strong>
+        <span id="profileBlood">Not added</span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- DASHBOARD OPTIONS -->
+
+  <div class="cards">
+
+    <div class="card">
+
+      <div class="icon">🩸</div>
+
+      <h3>Find Blood</h3>
+
+      <p>
+        Search available blood groups and nearby blood centres.
+      </p>
+
+      <button class="btn" onclick="findBlood()">
+        Find Blood
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="icon">🏥</div>
+
+      <h3>Hospitals</h3>
+
+      <p>
+        View hospital name, address and contact details.
+      </p>
+
+      <button class="btn" onclick="showHospitals()">
+        View Hospitals
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="icon">📍</div>
+
+      <h3>Location</h3>
+
+      <p>
+        Open hospital or blood centre location in Maps.
+      </p>
+
+      <button class="btn" onclick="showHospitals()">
+        View Locations
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="icon">🚨</div>
+
+      <h3>Request Blood</h3>
+
+      <p>
+        Submit a blood request for yourself or a patient.
+      </p>
+
+      <button class="btn" onclick="requestBlood()">
+        Request Blood
+      </button>
+
+    </div>
+
+
+    <!-- NEW EMERGENCY CARD -->
+
+    <div class="card emergency">
+
+      <div class="icon">🚨</div>
+
+      <h3>Emergency Blood</h3>
+
+      <p>
+        Send an urgent blood requirement to the LifeDrop system.
+      </p>
+
+      <button class="btn danger" onclick="emergencyBlood()">
+        Emergency Request
+      </button>
+
+    </div>
+
+
+    <!-- NEW DONOR CARD -->
+
+    <div class="card donor">
+
+      <div class="icon">❤️</div>
+
+      <h3>Become a Donor</h3>
+
+      <p>
+        Register yourself as a blood donor and help save lives.
+      </p>
+
+      <button class="btn green" onclick="becomeDonor()">
+        Become a Donor
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- MY REQUESTS & TRACKING -->
+  <div class="section" id="trackingSection">
+    <h2>My Requests & Tracking</h2>
+    <div id="myRequests" class="empty">Loading your requests...</div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="section" id="results"></div>
+
+</div>
+
+
+<script>
+
+  /*
+   * ==========================================
+   * API CONFIGURATION
+   * ==========================================
+   *
+   * Apne backend mein ye endpoints create karein:
+   *
+   * POST /api/blood-requests
+   * POST /api/emergency-blood
+   * POST /api/donors
+   * GET  /api/hospitals?search=...
+   *
+   */
+
+  const API = {
+    bloodRequest: "/api/blood-requests",
+    emergencyBlood: "/api/emergency-blood",
+    donor: "/api/donors",
+    hospitals: "/api/hospitals",
+    indiaCities: "/api/india-cities",
+    myRequests: "/api/my-requests"
+  };
+
+
+  // ==========================================
+  // GET CURRENT USER
+  // ==========================================
+
+  const savedUser =
+    localStorage.getItem("lifedropUser");
+
+
+  if (!savedUser) {
+
+    window.location.href = "/";
+
+  }
+
+
+  let user = {};
+
+  try {
+
+    user = JSON.parse(savedUser);
+
+  } catch (error) {
+
+    localStorage.removeItem("lifedropUser");
+
+    window.location.href = "/";
+
+  }
+
+
+  // ==========================================
+  // USER DETAILS
+  // ==========================================
+
+  document.getElementById("userName").textContent =
+    user.name || "User";
+
+  document.getElementById("profileName").textContent =
+    user.name || "-";
+
+  document.getElementById("profileEmail").textContent =
+    user.email || "-";
+
+  document.getElementById("profilePhone").textContent =
+    user.phone || "Not added";
+
+  document.getElementById("profileBlood").textContent =
+    user.bloodGroup || "Not added";
+
+  async function refreshUserProfile() {
+    const userId = user.id || user._id || "";
+    if (!userId) return;
+    try {
+      const response = await fetch(`/api/me?userId=${encodeURIComponent(userId)}`);
+      const data = await response.json();
+      if (response.ok && data.user) {
+        user = { ...user, ...data.user };
+        localStorage.setItem("lifedropUser", JSON.stringify(user));
+        document.getElementById("userName").textContent = user.name || "User";
+        document.getElementById("profileName").textContent = user.name || "-";
+        document.getElementById("profileEmail").textContent = user.email || "-";
+        document.getElementById("profilePhone").textContent = user.phone || "Not added";
+        document.getElementById("profileBlood").textContent = user.bloodGroup || "Not added";
+      }
+    } catch (e) { console.warn("Profile refresh failed", e); }
+  }
+  refreshUserProfile();
+
+
+  // ==========================================
+  // HELPER - RESULTS
+  // ==========================================
+
+  function resultsElement() {
+    return document.getElementById("results");
+  }
+
+
+  function showStatus(message, type = "success") {
+
+    const box = document.getElementById("formStatus");
+
+    if (!box) return;
+
+    box.className =
+      "status-message " +
+      (type === "success"
+        ? "status-success"
+        : "status-error");
+
+    box.textContent = message;
+
+    box.style.display = "block";
+  }
+
+
+  loadMyRequests();
+
+
+  // ==========================================
+  // FIND BLOOD
+  // ==========================================
+
+  function findBlood() {
+
+    resultsElement().innerHTML = `
+
+      <h2>Blood Availability</h2>
+
+      <div class="hospital">
+
+        <h3>🩸 O+ Blood</h3>
+
+        <p>
+          Available units: <strong>18</strong>
+        </p>
+
+        <p>
+          Status: Available
+        </p>
+
+      </div>
+
+      <div class="hospital">
+
+        <h3>🩸 A+ Blood</h3>
+
+        <p>
+          Available units: <strong>12</strong>
+        </p>
+
+        <p>
+          Status: Available
+        </p>
+
+      </div>
+
+      <div class="hospital">
+
+        <h3>🩸 B+ Blood</h3>
+
+        <p>
+          Available units: <strong>9</strong>
+        </p>
+
+        <p>
+          Status: Available
+        </p>
+
+      </div>
+
+      <div class="hospital">
+
+        <h3>🩸 AB+ Blood</h3>
+
+        <p>
+          Available units: <strong>5</strong>
+        </p>
+
+        <p>
+          Status: Available
+        </p>
+
+      </div>
+
+    `;
+  }
+
+
+  // ==========================================
+  // HOSPITALS
+  // ==========================================
+
+  function showHospitals() {
+
+    resultsElement().innerHTML = `
+
+      <h2>Hospitals & Blood Centres</h2>
+
+      <div class="hospital">
+
+        <h3>
+          District Hospital Blood Centre
+        </h3>
+
+        <p>
+          📍 Civil Hospital Road, Sector 10,
+          Gurugram, Haryana
+        </p>
+
+        <p>
+          🩸 O+, A+, B+, AB+
+        </p>
+
+        <a
+          class="map-btn"
+          href="https://www.google.com/maps/search/?api=1&query=Civil+Hospital+Road+Sector+10+Gurugram+Haryana"
+          target="_blank"
+        >
+          📍 Open Location
+        </a>
+
+      </div>
+
+
+      <div class="hospital">
+
+        <h3>
+          Fortis Memorial Research Institute Blood Centre
+        </h3>
+
+        <p>
+          📍 Sector 44, Gurugram, Haryana
+        </p>
+
+        <p>
+          🩸 O+, O-, A+, B+
+        </p>
+
+        <a
+          class="map-btn"
+          href="https://www.google.com/maps/search/?api=1&query=Fortis+Memorial+Research+Institute+Gurugram"
+          target="_blank"
+        >
+          📍 Open Location
+        </a>
+
+      </div>
+
+    `;
+  }
+
+
+  // ==========================================
+  // HOSPITAL AUTOCOMPLETE
+  // ==========================================
+
+  /*
+   * Sample fallback hospitals.
+   * Production mein preferably backend/database se
+   * hospital list load karein.
+   */
+
+  const hospitalData = [
+    {
+      name: "AIIMS New Delhi",
+      address: "Ansari Nagar, New Delhi"
+    },
+    {
+      name: "Apollo Hospital",
+      address: "Sarita Vihar, New Delhi"
+    },
+    {
+      name: "Asian Institute of Medical Sciences",
+      address: "Faridabad, Haryana"
+    },
+    {
+      name: "Artemis Hospital",
+      address: "Sector 51, Gurugram"
+    },
+    {
+      name: "Fortis Memorial Research Institute",
+      address: "Sector 44, Gurugram"
+    },
+    {
+      name: "Medanta - The Medicity",
+      address: "Sector 38, Gurugram"
+    },
+    {
+      name: "Max Super Speciality Hospital",
+      address: "Saket, New Delhi"
+    }
+  ];
+
+
+  function createHospitalAutocomplete(
+    inputId,
+    suggestionsId
+  ) {
+
+    const input =
+      document.getElementById(inputId);
+
+    const box =
+      document.getElementById(suggestionsId);
+
+
+    if (!input || !box) return;
+
+
+    input.addEventListener("input", async function () {
+
+      const search =
+        input.value.trim();
+
+
+      if (search.length === 0) {
+
+        box.innerHTML = "";
+        box.style.display = "none";
+
+        return;
+
+      }
+
+
+      let hospitals = [];
+
+
+      /*
+       * Pehle backend se hospitals lene ki
+       * koshish karenge.
+       */
+
+      try {
+
+        const response =
+          await fetch(
+            `${API.hospitals}?search=${encodeURIComponent(search)}`
+          );
+
+
+        if (response.ok) {
+
+          const data =
+            await response.json();
+
+          hospitals =
+            Array.isArray(data)
+              ? data
+              : (data.hospitals || []);
+
+        }
+
+      } catch (error) {
+
+        /*
+         * Backend unavailable hone par
+         * local fallback use hoga.
+         */
+
+        hospitals = [];
+
+      }
+
+
+      /*
+       * Agar backend se data nahi aaya,
+       * sample/local list filter karo.
+       */
+
+      if (hospitals.length === 0) {
+
+        hospitals =
+          hospitalData.filter(hospital =>
+            hospital.name
+              .toLowerCase()
+              .includes(search.toLowerCase())
+          );
+
+      }
+
+
+      box.innerHTML = "";
+
+
+      if (hospitals.length === 0) {
+
+        box.innerHTML = `
+          <div class="hospital-suggestion">
+            No hospital found
+          </div>
+        `;
+
+        box.style.display = "block";
+
+        return;
+
+      }
+
+
+      hospitals
+        .slice(0, 10)
+        .forEach(hospital => {
+
+          const item =
+            document.createElement("div");
+
+          item.className =
+            "hospital-suggestion";
+
+
+          item.innerHTML = `
+
+            <strong>
+              ${escapeHTML(hospital.name || "")}
+            </strong>
+
+            <small>
+              ${escapeHTML(hospital.address || "")}
+            </small>
+
+          `;
+
+
+          item.addEventListener(
+            "click",
+            function () {
+
+              input.value =
+                hospital.name || "";
+
+              box.innerHTML = "";
+              box.style.display = "none";
+
+            }
+          );
+
+
+          box.appendChild(item);
+
+        });
+
+
+      box.style.display = "block";
+
+    });
+
+
+    document.addEventListener(
+      "click",
+      function (event) {
+
+        if (
+          event.target !== input &&
+          !box.contains(event.target)
+        ) {
+
+          box.style.display = "none";
+
+        }
+
+      }
+    );
+
+  }
+
+
+  function escapeHTML(value) {
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  // ==========================================
+  // INDIA CITY AUTOCOMPLETE
+  // ==========================================
+
+  function createCityAutocomplete(inputId, suggestionsId) {
+    const input = document.getElementById(inputId);
+    const box = document.getElementById(suggestionsId);
+    if (!input || !box) return;
+
+    input.addEventListener("input", async function () {
+      const search = input.value.trim();
+      if (!search) { box.innerHTML = ""; box.style.display = "none"; return; }
+
+      try {
+        const response = await fetch(`${API.indiaCities}?search=${encodeURIComponent(search)}`);
+        const data = await response.json();
+        const cities = Array.isArray(data.cities) ? data.cities : [];
+        box.innerHTML = "";
+
+        if (!cities.length) {
+          box.innerHTML = `<div class="hospital-suggestion">No city found</div>`;
+          box.style.display = "block";
+          return;
+        }
+
+        cities.forEach(city => {
+          const item = document.createElement("div");
+          item.className = "hospital-suggestion";
+          item.innerHTML = `<strong>📍 ${escapeHTML(city)}</strong>`;
+          item.addEventListener("click", () => {
+            input.value = city;
+            box.innerHTML = "";
+            box.style.display = "none";
+          });
+          box.appendChild(item);
+        });
+        box.style.display = "block";
+      } catch (error) {
+        box.innerHTML = `<div class="hospital-suggestion">City search unavailable</div>`;
+        box.style.display = "block";
+      }
+    });
+
+    document.addEventListener("click", function(event) {
+      if (event.target !== input && !box.contains(event.target)) box.style.display = "none";
+    });
+  }
+
+
+  // ==========================================
+  // REQUEST BLOOD
+  // ==========================================
+
+  function requestBlood() {
+
+    resultsElement().innerHTML = `
+
+      <h2>Request Blood</h2>
+
+      <div class="form-card">
+
+        <div id="formStatus"
+             class="status-message">
+        </div>
+
+        <form onsubmit="submitRequest(event)">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label>
+                Patient Name <span class="required">*</span>
+              </label>
+
+              <input
+                id="patientName"
+                required
+                placeholder="Patient Name"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Blood Group <span class="required">*</span>
+              </label>
+
+              <select id="bloodGroup" required>
+
+                <option value="">
+                  Select Blood Group
+                </option>
+
+                <option>O+</option>
+                <option>O-</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Units Required <span class="required">*</span>
+              </label>
+
+              <input
+                id="units"
+                type="number"
+                min="1"
+                required
+                placeholder="Units Required"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Contact Number <span class="required">*</span>
+              </label>
+
+              <input
+                id="contact"
+                type="tel"
+                required
+                placeholder="Contact Number"
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Hospital Name <span class="required">*</span>
+              </label>
+
+              <div class="suggestion-box">
+
+                <input
+                  id="hospitalName"
+                  required
+                  autocomplete="off"
+                  placeholder="Type hospital name..."
+                >
+
+                <div
+                  id="hospitalSuggestions"
+                  class="hospital-suggestions"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Additional Details
+              </label>
+
+              <textarea
+                id="requestDetails"
+                placeholder="Any additional information..."
+              ></textarea>
+
+            </div>
+
+          </div>
+
+
+          <button class="btn" type="submit">
+            Submit Blood Request
+          </button>
+
+        </form>
+
+      </div>
+
+    `;
+
+
+    createHospitalAutocomplete(
+      "hospitalName",
+      "hospitalSuggestions"
+    );
+
+  }
+
+
+  async function submitRequest(event) {
+
+    event.preventDefault();
+
+
+    const data = {
+
+      type: "normal",
+
+      userId: user.id || user._id || "",
+
+      patientName:
+        document.getElementById("patientName").value,
+
+      bloodGroup:
+        document.getElementById("bloodGroup").value,
+
+      units:
+        Number(document.getElementById("units").value),
+
+      hospitalName:
+        document.getElementById("hospitalName").value,
+
+      contact:
+        document.getElementById("contact").value,
+
+      details:
+        document.getElementById("requestDetails").value,
+
+      requester: {
+
+        name: user.name || "",
+
+        email: user.email || "",
+
+        phone: user.phone || ""
+
+      },
+
+      createdAt:
+        new Date().toISOString()
+
+    };
+
+
+    await sendToServer(
+      API.bloodRequest,
+      data,
+      event.target
+    );
+
+  }
+
+
+  // ==========================================
+  // EMERGENCY BLOOD
+  // ==========================================
+
+  function emergencyBlood() {
+
+    resultsElement().innerHTML = `
+
+      <h2>🚨 Emergency Blood Request</h2>
+
+      <div class="form-card">
+
+        <div class="urgent-note">
+
+          <strong>Emergency Request</strong><br>
+
+          Please enter correct patient and hospital
+          information. This request will be stored
+          separately from normal blood requests.
+
+        </div>
+
+
+        <div id="formStatus"
+             class="status-message">
+        </div>
+
+
+        <form onsubmit="submitEmergency(event)">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label>
+                Patient Name <span class="required">*</span>
+              </label>
+
+              <input
+                id="emergencyPatient"
+                required
+                placeholder="Patient Name"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Blood Group <span class="required">*</span>
+              </label>
+
+              <select
+                id="emergencyBloodGroup"
+                required
+              >
+
+                <option value="">
+                  Select Blood Group
+                </option>
+
+                <option>O+</option>
+                <option>O-</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Units Required <span class="required">*</span>
+              </label>
+
+              <input
+                id="emergencyUnits"
+                type="number"
+                min="1"
+                required
+                placeholder="Units Required"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Contact Number <span class="required">*</span>
+              </label>
+
+              <input
+                id="emergencyContact"
+                type="tel"
+                required
+                placeholder="Emergency Contact"
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Hospital Name <span class="required">*</span>
+              </label>
+
+              <div class="suggestion-box">
+
+                <input
+                  id="emergencyHospital"
+                  required
+                  autocomplete="off"
+                  placeholder="Type hospital name..."
+                >
+
+                <div
+                  id="emergencyHospitalSuggestions"
+                  class="hospital-suggestions"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Emergency Details
+              </label>
+
+              <textarea
+                id="emergencyDetails"
+                placeholder="Enter emergency information..."
+              ></textarea>
+
+            </div>
+
+          </div>
+
+
+          <button
+            class="btn danger"
+            type="submit"
+          >
+            🚨 Submit Emergency Request
+          </button>
+
+        </form>
+
+      </div>
+
+    `;
+
+
+    createHospitalAutocomplete(
+      "emergencyHospital",
+      "emergencyHospitalSuggestions"
+    );
+
+  }
+
+
+  async function submitEmergency(event) {
+
+    event.preventDefault();
+
+
+    const data = {
+
+      type: "emergency",
+
+      userId: user.id || user._id || "",
+
+      patientName:
+        document.getElementById("emergencyPatient").value,
+
+      bloodGroup:
+        document.getElementById("emergencyBloodGroup").value,
+
+      units:
+        Number(
+          document.getElementById("emergencyUnits").value
+        ),
+
+      hospitalName:
+        document.getElementById("emergencyHospital").value,
+
+      contact:
+        document.getElementById("emergencyContact").value,
+
+      details:
+        document.getElementById("emergencyDetails").value,
+
+      requester: {
+
+        name: user.name || "",
+
+        email: user.email || "",
+
+        phone: user.phone || ""
+
+      },
+
+      priority: "emergency",
+
+      createdAt:
+        new Date().toISOString()
+
+    };
+
+
+    await sendToServer(
+      API.emergencyBlood,
+      data,
+      event.target
+    );
+
+  }
+
+
+  // ==========================================
+  // BECOME A DONOR
+  // ==========================================
+
+  function becomeDonor() {
+
+    resultsElement().innerHTML = `
+
+      <h2>❤️ Become a Blood Donor</h2>
+
+      <div class="form-card">
+
+        <div id="formStatus"
+             class="status-message">
+        </div>
+
+
+        <form onsubmit="submitDonor(event)">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label>
+                Full Name <span class="required">*</span>
+              </label>
+
+              <input
+                id="donorName"
+                required
+                value="${escapeHTML(user.name || "")}"
+                placeholder="Full Name"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Email <span class="required">*</span>
+              </label>
+
+              <input
+                id="donorEmail"
+                type="email"
+                required
+                value="${escapeHTML(user.email || "")}"
+                placeholder="Email"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Phone Number <span class="required">*</span>
+              </label>
+
+              <input
+                id="donorPhone"
+                type="tel"
+                required
+                value="${escapeHTML(user.phone || "")}"
+                placeholder="Phone Number"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Blood Group <span class="required">*</span>
+              </label>
+
+              <select id="donorBloodGroup" required>
+
+                <option value="">
+                  Select Blood Group
+                </option>
+
+                <option>O+</option>
+                <option>O-</option>
+                <option>A+</option>
+                <option>A-</option>
+                <option>B+</option>
+                <option>B-</option>
+                <option>AB+</option>
+                <option>AB-</option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                City
+              </label>
+
+              <div class="suggestion-box">
+
+                <input
+                  id="donorCity"
+                  autocomplete="off"
+                  placeholder="Type Indian city name..."
+                >
+
+                <div
+                  id="donorCitySuggestions"
+                  class="hospital-suggestions"
+                ></div>
+
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Last Donation Date
+              </label>
+
+              <input
+                id="lastDonation"
+                type="date"
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label>
+                Preferred Hospital / Blood Centre
+              </label>
+
+              <div class="suggestion-box">
+
+                <input
+                  id="donorHospital"
+                  autocomplete="off"
+                  placeholder="Type hospital or blood centre..."
+                >
+
+                <div
+                  id="donorHospitalSuggestions"
+                  class="hospital-suggestions"
+                ></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <button
+            class="btn green"
+            type="submit"
+          >
+            ❤️ Register as Donor
+          </button>
+
+        </form>
+
+      </div>
+
+    `;
+
+
+    createHospitalAutocomplete(
+      "donorHospital",
+      "donorHospitalSuggestions"
+    );
+
+    createCityAutocomplete(
+      "donorCity",
+      "donorCitySuggestions"
+    );
+
+  }
+
+
+  async function submitDonor(event) {
+
+    event.preventDefault();
+
+
+    const data = {
+
+      type: "donor",
+
+      name:
+        document.getElementById("donorName").value,
+
+      email:
+        document.getElementById("donorEmail").value,
+
+      phone:
+        document.getElementById("donorPhone").value,
+
+      bloodGroup:
+        document.getElementById("donorBloodGroup").value,
+
+      city:
+        document.getElementById("donorCity").value,
+
+      lastDonationDate:
+        document.getElementById("lastDonation").value,
+
+      preferredHospital:
+        document.getElementById("donorHospital").value,
+
+      userId:
+        user.id || user._id || null,
+
+      createdAt:
+        new Date().toISOString()
+
+    };
+
+
+    await sendToServer(
+      API.donor,
+      data,
+      event.target
+    );
+
+  }
+
+
+  // ==========================================
+  // SEND DATA TO SERVER
+  // ==========================================
+
+  async function sendToServer(
+    endpoint,
+    data,
+    form
+  ) {
+
+    const statusBox =
+      document.getElementById("formStatus");
+
+
+    try {
+
+      const response =
+        await fetch(endpoint, {
+
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify(data)
+
+        });
+
+
+      const result =
+        await response.json()
+          .catch(() => ({}));
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          result.message ||
+          "Server request failed."
+        );
+
+      }
+
+
+      if (statusBox) {
+
+        statusBox.className =
+          "status-message status-success";
+
+        statusBox.innerHTML =
+          (result.message || "Details successfully saved on server.") +
+          (result.orderId ? `<br><strong>Order ID:</strong> ${escapeHTML(result.orderId)}` : "") +
+          (result.trackId ? `<br><strong>Track ID:</strong> ${escapeHTML(result.trackId)}` : "");
+
+        statusBox.style.display = "block";
+
+      }
+
+
+      if (form) {
+        form.reset();
+      }
+
+      loadMyRequests();
+
+
+    } catch (error) {
+
+      console.error(error);
+
+
+      /*
+       * Backend connected na hone par user ko
+       * clear message milega.
+       */
+
+      if (statusBox) {
+
+        statusBox.className =
+          "status-message status-error";
+
+        statusBox.textContent =
+          error.message ||
+          "Data save nahi hua. Please check your server/API.";
+
+        statusBox.style.display = "block";
+
+      }
+
+    }
+
+  }
+
+
+  // ==========================================
+  // TRACK ID LOOKUP
+  // ==========================================
+
+  function showTrackLookup() {
+    resultsElement().innerHTML = `
+      <h2>🔎 Track a Request</h2>
+      <div class="form-card">
+        <div id="trackLookupStatus" class="status-message"></div>
+        <div class="form-group">
+          <label>Track ID / Order ID</label>
+          <input id="lookupTrackId" placeholder="Example: LTR-... / ETR-... / DTR-..." autocomplete="off">
+        </div>
+        <button class="btn" type="button" onclick="lookupTrackId()">Find Record</button>
+        <div id="trackLookupResult" style="margin-top:16px"></div>
+      </div>`;
+  }
+
+  async function lookupTrackId() {
+    const id = document.getElementById("lookupTrackId").value.trim();
+    const status = document.getElementById("trackLookupStatus");
+    const result = document.getElementById("trackLookupResult");
+    if (!id) { status.className="status-message status-error"; status.textContent="Track ID enter karo."; status.style.display="block"; return; }
+    try {
+      const response = await fetch(`/api/track/${encodeURIComponent(id)}`);
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Record not found.");
+      const r = data.record || {};
+      status.className="status-message status-success"; status.textContent="Record mil gaya."; status.style.display="block";
+      result.innerHTML = `<div class="hospital"><h3>${escapeHTML(data.type || "Record")}</h3><p><strong>Order ID:</strong> ${escapeHTML(r.orderId || "-")}</p><p><strong>Track ID:</strong> ${escapeHTML(r.trackId || "-")}</p><p><strong>Name:</strong> ${escapeHTML(r.patientName || r.name || "-")}</p><p><strong>Phone:</strong> ${escapeHTML(r.contact || r.phone || r.requester?.phone || "-")}</p><p><strong>Blood Group:</strong> ${escapeHTML(r.bloodGroup || "-")}</p><p><strong>Hospital:</strong> ${escapeHTML(r.hospitalName || r.preferredHospital || "-")}</p><p><strong>City:</strong> ${escapeHTML(r.city || "-")}</p><p><strong>Status:</strong> ${escapeHTML(r.status || "Pending")}</p><p>${escapeHTML(r.statusMessage || "")}</p></div>`;
+    } catch (error) {
+      status.className="status-message status-error"; status.textContent=error.message; status.style.display="block"; result.innerHTML="";
+    }
+  }
+
+
+  // ==========================================
+  // MY REQUESTS & TRACKING
+  // ==========================================
+  async function loadMyRequests() {
+    const box = document.getElementById("myRequests");
+    if (!box) return;
+    const userId = user.id || user._id || "";
+    if (!userId) { box.textContent = "User ID missing. Please login again."; return; }
+    try {
+      const response = await fetch(`${API.myRequests}?userId=${encodeURIComponent(userId)}`);
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.message || "Unable to load request history.");
+      const all = [
+        ...(data.bloodRequests || []).map(item => ({...item, requestType:"Request Blood"})),
+        ...(data.emergencyRequests || []).map(item => ({...item, requestType:"Emergency Blood"})),
+        ...(data.donors || []).map(item => ({...item, requestType:"Become a Donor"}))
+      ].sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+      if (!all.length) { box.className="empty"; box.textContent="Abhi tak koi request ya donor registration nahi hai."; return; }
+      box.className="";
+      box.innerHTML = all.map(item => {
+        const isDonor=item.requestType==="Become a Donor";
+        const isEmergency=item.requestType==="Emergency Blood";
+        const details=isDonor ? `Blood Group: ${escapeHTML(item.bloodGroup || "-")}` : `Patient: ${escapeHTML(item.patientName || "-")} · ${escapeHTML(item.bloodGroup || "-")} · ${escapeHTML(String(item.units || "-"))} unit(s)`;
+        return `<div class="tracking-card"><div class="tracking-head"><div><strong>${isEmergency?"🚨":isDonor?"❤️":"🩸"} ${escapeHTML(item.requestType)}</strong><div style="color:#65707d;font-size:13px;margin-top:4px">${details}</div></div><span class="status-pill">${escapeHTML(item.status || "Pending")}</span></div><div class="tracking-meta"><div><strong>Order ID</strong>${escapeHTML(item.orderId || "-")}</div><div><strong>Track ID</strong>${escapeHTML(item.trackId || "-")}</div><div><strong>Date</strong>${item.createdAt ? new Date(item.createdAt).toLocaleString() : "-"}</div><div><strong>Contact</strong>${escapeHTML(item.contact || item.phone || "-")}</div></div>${item.statusMessage ? `<div class="status-note">${escapeHTML(item.statusMessage)}</div>` : ""}</div>`;
+      }).join("");
+    } catch (error) { box.className="empty"; box.textContent=error.message || "Request history load nahi hui."; }
+  }
+
+
+  // ==========================================
+  // LOGOUT
+  // ==========================================
+
+  function logout() {
+
+    localStorage.removeItem(
+      "lifedropUser"
+    );
+
+    window.location.href = "/";
+
+  }
+
+</script>
+
+</body>
+</html>

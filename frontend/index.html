@@ -1,0 +1,2522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>LifeDrop Blood Bank</title>
+
+<style>
+:root{
+  color-scheme:light dark;
+  --bg:light-dark(#f7f9fc,#10141b);
+  --surface:light-dark(#fff,#171d26);
+  --text:light-dark(#17202a,#f3f6fa);
+  --muted:light-dark(#65707d,#aab5c2);
+  --line:light-dark(#e5e9ef,#2a3441);
+  --red:#c6283d;
+  --red2:#a91f32;
+  --soft:light-dark(#fff1f3,#29171c);
+  --green:#198754
+}
+
+*{
+  box-sizing:border-box
+}
+
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+  background:var(--bg);
+  color:var(--text)
+}
+
+#app{
+  min-height:100vh;
+  background:var(--bg)
+}
+
+/* NAVBAR */
+
+nav{
+  height:70px;
+  border-bottom:1px solid var(--line);
+  background:var(--surface);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 7%;
+  position:sticky;
+  top:0;
+  z-index:5
+}
+
+.brand{
+  font-weight:800;
+  font-size:20px;
+  display:flex;
+  gap:10px;
+  align-items:center
+}
+
+.drop{
+  width:34px;
+  height:40px;
+  background:var(--red);
+  clip-path:path(
+    'M17 0 C17 0 0 19 0 27 A17 17 0 0 0 34 27 C34 19 17 0 17 0'
+  );
+  border-radius:50%
+}
+
+.links{
+  display:flex;
+  gap:24px
+}
+
+.links button{
+  border:0;
+  background:none;
+  color:var(--muted);
+  font-weight:600;
+  cursor:pointer
+}
+
+.links button:hover{
+  color:var(--red)
+}
+
+.nav-toggle{
+  display:none;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--text);
+  padding:9px 11px;
+  border-radius:9px;
+  cursor:pointer;
+  font-size:20px
+}
+
+.mobile-menu{
+  display:none
+}
+
+/* HERO */
+
+.hero{
+  padding:72px 7% 55px;
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:40px;
+  align-items:center
+}
+
+.eyebrow{
+  color:var(--red);
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:13px
+}
+
+.hero h1{
+  font-size:clamp(38px,5vw,64px);
+  line-height:1.02;
+  margin:12px 0
+}
+
+.hero p{
+  font-size:18px;
+  color:var(--muted);
+  max-width:650px;
+  line-height:1.6
+}
+
+.actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:25px
+}
+
+/* BUTTONS */
+
+.btn{
+  padding:13px 18px;
+  border-radius:11px;
+  border:1px solid var(--line);
+  background:var(--surface);
+  color:var(--text);
+  font-weight:750;
+  cursor:pointer
+}
+
+.btn.primary{
+  background:var(--red);
+  border-color:var(--red);
+  color:white
+}
+
+.btn.primary:hover{
+  background:var(--red2)
+}
+
+/* BLOOD CARD */
+
+.blood-card{
+  background:linear-gradient(145deg,var(--red),#7d1526);
+  color:white;
+  border-radius:24px;
+  padding:28px;
+  box-shadow:0 18px 50px #8b183a22
+}
+
+.blood-card h2{
+  margin-top:0
+}
+
+.drop-big{
+  font-size:90px;
+  line-height:1;
+  text-align:center;
+  margin:20px
+}
+
+.mini-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px
+}
+
+.mini{
+  background:#ffffff1c;
+  border:1px solid #ffffff30;
+  padding:12px;
+  border-radius:12px;
+  text-align:center
+}
+
+.mini b{
+  display:block;
+  font-size:20px
+}
+
+/* SECTIONS */
+
+section{
+  padding:42px 7%
+}
+
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:20px
+}
+
+.section-head h2{
+  margin:0;
+  font-size:30px
+}
+
+.section-head p{
+  color:var(--muted)
+}
+
+/* BLOOD GRID */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px
+}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px
+}
+
+.group{
+  font-size:25px;
+  font-weight:850
+}
+
+.units{
+  font-size:34px;
+  font-weight:800;
+  margin:7px 0
+}
+
+.available{
+  color:var(--green);
+  font-size:13px;
+  font-weight:700
+}
+
+/* FEATURES */
+
+.features{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px
+}
+
+.feature h3{
+  margin:8px 0
+}
+
+.feature p{
+  color:var(--muted);
+  line-height:1.5
+}
+
+.icon{
+  font-size:28px
+}
+
+/* CTA */
+
+.cta{
+  background:var(--soft);
+  border:1px solid #c6283d33;
+  border-radius:22px;
+  padding:30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px
+}
+
+.cta h2{
+  margin:0 0 7px
+}
+
+.cta p{
+  margin:0;
+  color:var(--muted)
+}
+
+/* FOOTER */
+
+footer{
+  padding:30px 7%;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between
+}
+
+/* MODAL */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0008;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+  padding:20px
+}
+
+.modal.open{
+  display:flex
+}
+
+.dialog{
+  width:min(520px,100%);
+  background:var(--surface);
+  border-radius:18px;
+  padding:24px;
+  border:1px solid var(--line)
+}
+
+.dialog h2{
+  margin-top:0
+}
+
+.form{
+  display:grid;
+  gap:12px
+}
+
+.form input,
+.form select{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--bg);
+  color:var(--text)
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px
+}
+
+.close{
+  float:right;
+  border:0;
+  background:none;
+  color:var(--muted);
+  font-size:22px;
+  cursor:pointer
+}
+
+/* RESPONSIVE */
+
+@media(max-width:850px){
+
+  .hero{
+    grid-template-columns:1fr
+  }
+
+  .grid{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .features{
+    grid-template-columns:1fr
+  }
+
+  .links{
+    display:none
+  }
+
+  .nav-toggle{
+    display:block
+  }
+
+  .mini-grid{
+    grid-template-columns:repeat(2,1fr)
+  }
+
+  .cta{
+    display:block
+  }
+
+  .cta .btn{
+    margin-top:18px
+  }
+
+  .mobile-menu.open{
+    display:grid;
+    gap:8px;
+    position:absolute;
+    top:70px;
+    left:0;
+    right:0;
+    padding:14px 7%;
+    background:var(--surface);
+    border-bottom:1px solid var(--line)
+  }
+
+  .mobile-menu button{
+    padding:11px;
+    text-align:left;
+    border:1px solid var(--line);
+    border-radius:9px;
+    background:var(--bg);
+    color:var(--text);
+    font-weight:650
+  }
+}
+
+@media(max-width:520px){
+
+  .grid{
+    grid-template-columns:1fr
+  }
+
+  .row{
+    grid-template-columns:1fr
+  }
+
+  .hero{
+    padding-top:45px
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<div id="app">
+
+<!-- ================= NAVBAR ================= -->
+
+<nav>
+
+  <div class="brand">
+    <span class="drop"></span>
+    LifeDrop
+  </div>
+
+  <div class="links">
+
+    <button onclick="go('home')">
+      Home
+    </button>
+
+    <button onclick="go('availability')">
+      Blood Availability
+    </button>
+
+    <button onclick="go('about')">
+      About & Contact
+    </button>
+
+    <button onclick="requireAuth('donor')">
+      Become a Donor
+    </button>
+
+    <button onclick="requireAuth('request')">
+      Request Blood
+    </button>
+
+    <button onclick="openModal('login')">
+      Login
+    </button>
+
+    <button onclick="window.location.href='/signup.html'">
+      Sign Up
+    </button>
+
+  </div>
+
+  <button
+    class="nav-toggle"
+    onclick="toggleMenu()"
+  >
+    ☰
+  </button>
+
+  <button
+    class="btn primary"
+    onclick="requireAuth('request')"
+  >
+    Emergency Request
+  </button>
+
+</nav>
+
+
+<!-- MOBILE MENU -->
+
+<div
+  class="mobile-menu"
+  id="mobileMenu"
+>
+
+  <button
+    onclick="go('home');toggleMenu()"
+  >
+    Home
+  </button>
+
+  <button
+    onclick="go('availability');toggleMenu()"
+  >
+    Blood Availability
+  </button>
+
+  <button
+    onclick="go('about');toggleMenu()"
+  >
+    About & Contact
+  </button>
+
+  <button
+    onclick="requireAuth('donor');toggleMenu()"
+  >
+    Become a Donor
+  </button>
+
+  <button
+    onclick="requireAuth('request');toggleMenu()"
+  >
+    Request Blood
+  </button>
+
+  <button
+    onclick="openModal('login');toggleMenu()"
+  >
+    Login
+  </button>
+
+  <button
+    onclick="window.location.href='/signup.html'"
+  >
+    Sign Up
+  </button>
+
+</div>
+
+
+<!-- ================= MAIN ================= -->
+
+<main id="home">
+
+
+<!-- HERO -->
+
+<div class="hero">
+
+  <div>
+
+    <div class="eyebrow">
+      Blood Bank • MERN Mini Project
+    </div>
+
+    <h1>
+      Every drop can help someone.
+    </h1>
+
+    <p>
+      A clean frontend for a blood bank system
+      ready to connect with your Node.js,
+      Express API and MongoDB database.
+    </p>
+
+    <div class="actions">
+
+      <button
+        class="btn primary"
+        onclick="requireAuth('donor')"
+      >
+        Become a Donor
+      </button>
+
+      <button
+        class="btn"
+        onclick="go('availability')"
+      >
+        Find Blood
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="blood-card">
+
+    <h2>
+      Live inventory preview
+    </h2>
+
+    <div class="drop-big">
+      ♥
+    </div>
+
+    <div class="mini-grid">
+
+      <div class="mini">
+        <b>O+</b>
+        18 units
+      </div>
+
+      <div class="mini">
+        <b>A+</b>
+        12 units
+      </div>
+
+      <div class="mini">
+        <b>B+</b>
+        9 units
+      </div>
+
+      <div class="mini">
+        <b>AB+</b>
+        5 units
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= BLOOD AVAILABILITY ================= -->
+
+<section id="availability">
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>
+        Blood availability
+      </h2>
+
+      <p>
+        Sample data — connect this section
+        to your MongoDB API.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div
+    class="grid"
+    id="stock"
+  ></div>
+
+</section>
+
+
+<!-- ================= HOW SYSTEM WORKS ================= -->
+
+<section>
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>
+        How the system works
+      </h2>
+
+      <p>
+        Core modules for the mini project.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="features">
+
+    <div class="card feature">
+
+      <div class="icon">
+        👤
+      </div>
+
+      <h3>
+        Donor Registration
+      </h3>
+
+      <p>
+        Users register as donors with
+        blood group, phone and city details.
+      </p>
+
+    </div>
+
+
+    <div class="card feature">
+
+      <div class="icon">
+        🩸
+      </div>
+
+      <h3>
+        Blood Search
+      </h3>
+
+      <p>
+        Search available units by blood group
+        and view current stock.
+      </p>
+
+    </div>
+
+
+    <div class="card feature">
+
+      <div class="icon">
+        📋
+      </div>
+
+      <h3>
+        Blood Requests
+      </h3>
+
+      <p>
+        Patients or hospitals submit requests
+        that admins can review.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section
+  id="dashboard"
+  style="display:none"
+>
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>
+        My Blood Dashboard
+      </h2>
+
+      <p id="welcomeUser">
+        Find blood, nearby centres and request help.
+      </p>
+
+    </div>
+
+    <button
+      class="btn"
+      onclick="logoutUser()"
+    >
+      Logout
+    </button>
+
+  </div>
+
+
+  <div
+    class="grid"
+    style="grid-template-columns:repeat(4,1fr)"
+  >
+
+    <div class="card">
+
+      <div class="icon">
+        🩸
+      </div>
+
+      <h3>
+        Find Blood
+      </h3>
+
+      <p>
+        Search available blood by group and city.
+      </p>
+
+      <button
+        class="btn primary"
+        onclick="showBloodResults()"
+      >
+        Find Blood
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="icon">
+        🏥
+      </div>
+
+      <h3>
+        Hospital Details
+      </h3>
+
+      <p>
+        See hospital name, address and contact details.
+      </p>
+
+      <button
+        class="btn"
+        onclick="showBloodResults()"
+      >
+        View Hospitals
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="icon">
+        📍
+      </div>
+
+      <h3>
+        Location
+      </h3>
+
+      <p>
+        Open hospital or blood centre location.
+      </p>
+
+      <button
+        class="btn"
+        onclick="showBloodResults()"
+      >
+        Open Locations
+      </button>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="icon">
+        🚨
+      </div>
+
+      <h3>
+        Request Blood
+      </h3>
+
+      <p>
+        Submit patient and hospital details.
+      </p>
+
+      <button
+        class="btn primary"
+        onclick="requireAuth('request')"
+      >
+        Request Blood
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div
+    id="bloodResults"
+    style="margin-top:20px"
+  ></div>
+
+</section>
+
+
+<!-- ================= DONORS ================= -->
+
+<section id="donors">
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>
+        Registered Donors
+      </h2>
+
+      <p>
+        Donor registrations saved permanently in MongoDB.
+      </p>
+
+    </div>
+
+    <button
+      class="btn"
+      onclick="showDonors()"
+    >
+      Refresh Donors
+    </button>
+
+  </div>
+
+  <div id="donorList"></div>
+
+</section>
+
+
+<!-- ================= REQUESTS ================= -->
+
+<section id="requests">
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>
+        Blood Requests
+      </h2>
+
+      <p>
+        Requests submitted by patients or hospitals
+        are saved in MongoDB.
+      </p>
+
+    </div>
+
+    <button
+      class="btn"
+      onclick="showRequests()"
+    >
+      Refresh Requests
+    </button>
+
+  </div>
+
+  <div id="requestList"></div>
+
+</section>
+
+
+<!-- ================= EMERGENCY ================= -->
+
+<section id="emergency">
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>
+        Emergency Blood Request
+      </h2>
+
+      <p>
+        Need blood urgently?
+        Submit your request after login/signup.
+      </p>
+
+    </div>
+
+    <button
+      class="btn primary"
+      onclick="requireAuth('request')"
+    >
+      Emergency Request
+    </button>
+
+  </div>
+
+
+  <div class="card">
+
+    <h3>
+      🚨 Emergency help
+    </h3>
+
+    <p style="color:var(--muted)">
+      Anyone can open the request form.
+      Login or signup is required before
+      the request can actually be submitted.
+    </p>
+
+    <button
+      class="btn primary"
+      onclick="requireAuth('request')"
+    >
+      Request Blood
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+
+<section id="about">
+
+  <div class="section-head">
+
+    <div>
+
+      <h2>
+        About LifeDrop & Contact
+      </h2>
+
+      <p>
+        Learn about our project and contact us.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="features">
+
+
+    <div class="card feature">
+
+      <div class="icon">
+        ❤️
+      </div>
+
+      <h3>
+        About LifeDrop
+      </h3>
+
+      <p>
+        LifeDrop is a blood bank management
+        mini project designed to connect
+        donors, patients and hospitals.
+      </p>
+
+    </div>
+
+
+    <div class="card feature">
+
+      <div class="icon">
+        📧
+      </div>
+
+      <h3>
+        Contact Us
+      </h3>
+
+      <p>
+        <b>Email:</b>
+        lifedrop@example.com
+      </p>
+
+      <p>
+        <b>Phone:</b>
+        +91 00000 00000
+      </p>
+
+      <p>
+        <b>Support:</b>
+        Monday–Saturday,
+        9:00 AM–6:00 PM
+      </p>
+
+    </div>
+
+
+    <div class="card feature">
+
+      <div class="icon">
+        🏥
+      </div>
+
+      <h3>
+        Our Purpose
+      </h3>
+
+      <p>
+        We aim to make blood availability,
+        donor registration and emergency
+        requests easier to manage.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= CTA ================= -->
+
+<section>
+
+  <div class="cta">
+
+    <div>
+
+      <h2>
+        Need blood urgently?
+      </h2>
+
+      <p>
+        Login or create an account before
+        submitting a blood request.
+      </p>
+
+    </div>
+
+    <button
+      class="btn primary"
+      onclick="requireAuth('request')"
+    >
+      Request Blood
+    </button>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+  <span>
+    © 2026 LifeDrop Blood Bank
+  </span>
+
+  <span>
+    MERN Stack Mini Project
+  </span>
+
+</footer>
+
+
+<!-- ================= MODAL ================= -->
+
+<div
+  class="modal"
+  id="modal"
+>
+
+  <div class="dialog">
+
+    <button
+      class="close"
+      onclick="closeModal()"
+    >
+      ×
+    </button>
+
+    <h2 id="modalTitle">
+      Become a Donor
+    </h2>
+
+    <form
+      class="form"
+      onsubmit="submitForm(event)"
+    >
+
+      <div class="row">
+
+        <input
+          required
+          placeholder="Full name"
+        >
+
+        <input
+          required
+          placeholder="Phone number"
+        >
+
+      </div>
+
+
+      <div class="row">
+
+        <select required>
+
+          <option value="">
+            Blood group
+          </option>
+
+          <option>O+</option>
+          <option>O-</option>
+          <option>A+</option>
+          <option>A-</option>
+          <option>B+</option>
+          <option>B-</option>
+          <option>AB+</option>
+          <option>AB-</option>
+
+        </select>
+
+
+        <input
+          required
+          placeholder="City"
+        >
+
+      </div>
+
+
+      <input
+        required
+        type="email"
+        placeholder="Email"
+      >
+
+
+      <button
+        class="btn primary"
+        type="submit"
+      >
+        Register
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- ================= AUTH CLICK PROTECTION ================= -->
+
+<script>
+
+document.addEventListener(
+  'click',
+  event => {
+
+    const button =
+      event.target.closest(
+        '[onclick*="requireAuth("]'
+      );
+
+    if(!button){
+      return;
+    }
+
+    const match =
+      button
+        .getAttribute('onclick')
+        .match(
+          /requireAuth\(['"]([^'"]+)['"]\)/
+        );
+
+    if(!match){
+      return;
+    }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    openModal(match[1]);
+
+  },
+  true
+);
+
+
+/*
+  Donor/Request form submit:
+  If user is not logged in,
+  stop the form and show alert.
+*/
+
+document.addEventListener(
+  'submit',
+  event => {
+
+    const title =
+      document.getElementById(
+        'modalTitle'
+      )?.textContent;
+
+    if(
+      ![
+        'Become a Donor',
+        'Request Blood'
+      ].includes(title)
+      ||
+      isLoggedIn()
+    ){
+      return;
+    }
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    alert(
+      'Please login or sign up first. Your form has not been submitted.'
+    );
+
+  },
+  true
+);
+
+</script>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+const stock = [
+
+  ['O+', '18'],
+  ['O-', '4'],
+  ['A+', '12'],
+  ['A-', '3'],
+  ['B+', '9'],
+  ['B-', '2'],
+  ['AB+', '5'],
+  ['AB-', '1']
+
+];
+
+
+const centres = [
+
+  {
+    name:'District Hospital Blood Centre',
+    city:'Gurugram, Haryana',
+    address:'Civil Hospital Road, Sector 10, Gurugram, Haryana',
+    phone:'+91 00000 00000',
+    groups:'O+, A+, B+, AB+',
+    map:'https://www.google.com/maps/search/?api=1&query=Civil+Hospital+Road+Sector+10+Gurugram+Haryana'
+  },
+
+  {
+    name:'Fortis Memorial Research Institute Blood Centre',
+    city:'Gurugram, Haryana',
+    address:'Sector 44, Gurugram, Haryana',
+    phone:'+91 00000 00000',
+    groups:'O+, O-, A+, B+',
+    map:'https://www.google.com/maps/search/?api=1&query=Fortis+Memorial+Research+Institute+Gurugram'
+  },
+
+  {
+    name:'Safdarjung Hospital Blood Centre',
+    city:'New Delhi',
+    address:'Ansari Nagar, New Delhi, Delhi',
+    phone:'+91 00000 00000',
+    groups:'A+, B+, O+, O-',
+    map:'https://www.google.com/maps/search/?api=1&query=Safdarjung+Hospital+New+Delhi'
+  }
+
+];
+
+
+document.getElementById('stock').innerHTML =
+  stock
+    .map(
+      x => `
+        <div class="card">
+
+          <div class="group">
+            ${x[0]}
+          </div>
+
+          <div class="units">
+            ${x[1]} units
+          </div>
+
+          <div class="available">
+            ● Available
+          </div>
+
+        </div>
+      `
+    )
+    .join('');
+
+
+function go(id){
+
+  document
+    .getElementById(id)
+    .scrollIntoView({
+      behavior:'smooth'
+    });
+
+}
+
+
+function toggleMenu(){
+
+  document
+    .getElementById('mobileMenu')
+    .classList
+    .toggle('open');
+
+}
+
+
+function isLoggedIn(){
+
+  return !!localStorage.getItem(
+    'lifedropUser'
+  );
+
+}
+
+
+/*
+  IMPORTANT:
+  Donor/Request buttons DO NOT
+  redirect directly to signup.
+  They open the form first.
+*/
+
+function requireAuth(type){
+
+  openModal(type);
+
+}
+
+
+function showDashboard(
+  name='User'
+){
+
+  document
+    .getElementById('dashboard')
+    .style
+    .display='block';
+
+  document
+    .querySelector('.hero')
+    .style
+    .display='none';
+
+  document
+    .querySelectorAll(
+      'main#home > section:not(#dashboard)'
+    )
+    .forEach(
+      s => s.style.display='none'
+    );
+
+  document
+    .getElementById('welcomeUser')
+    .textContent =
+      'Welcome, ' +
+      name +
+      '. Find blood, hospital details, address, location and request blood from one dashboard.';
+
+  go('dashboard');
+
+  showBloodResults();
+
+}
+
+
+function showBloodResults(){
+
+  const box =
+    document.getElementById(
+      'bloodResults'
+    );
+
+
+  box.innerHTML = `
+
+    <div class="card">
+
+      <h3>
+        Blood centres & hospitals
+      </h3>
+
+      <p style="color:var(--muted)">
+        Demo location data for the mini project.
+        Confirm stock by phone before travelling.
+      </p>
+
+      ${
+        centres
+          .map(
+            c => `
+
+              <div
+                class="card"
+                style="margin-top:12px"
+              >
+
+                <h3>
+                  ${c.name}
+                </h3>
+
+                <p>
+                  <b>Blood groups:</b>
+                  ${c.groups}
+                </p>
+
+                <p>
+                  <b>Address:</b>
+                  ${c.address}
+                </p>
+
+                <p>
+                  <b>Contact:</b>
+                  ${c.phone}
+                </p>
+
+                <a
+                  class="btn"
+                  href="${c.map}"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  📍 Open Location
+                </a>
+
+              </div>
+
+            `
+          )
+          .join('')
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+function logoutUser(){
+
+  localStorage.removeItem(
+    'lifedropUser'
+  );
+
+  document
+    .getElementById('dashboard')
+    .style
+    .display='none';
+
+  document
+    .querySelector('.hero')
+    .style
+    .display='grid';
+
+  document
+    .querySelectorAll(
+      'main#home > section:not(#dashboard)'
+    )
+    .forEach(
+      s => s.style.display='block'
+    );
+
+  alert('Logged out.');
+
+  go('home');
+
+}
+
+
+async function showDonors(){
+
+  const box =
+    document.getElementById(
+      'donorList'
+    );
+
+  try{
+
+    const r =
+      await fetch('/api/donors');
+
+    const data =
+      await r.json();
+
+    if(!r.ok){
+
+      throw new Error(
+        data.message ||
+        'Unable to load donors'
+      );
+
+    }
+
+    const donors =
+      data.donors || [];
+
+
+    if(!donors.length){
+
+      box.innerHTML = `
+
+        <div class="card">
+
+          <p style="color:var(--muted)">
+            No donor registrations saved yet.
+            Click "Become a Donor" and submit
+            the form.
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    box.innerHTML = `
+
+      <div class="grid">
+
+        ${
+          donors
+            .map(
+              d => `
+
+                <div class="card">
+
+                  <div class="group">
+                    ${d.name}
+                  </div>
+
+                  <p>
+                    <b>Blood group:</b>
+                    ${d.bloodGroup}
+                  </p>
+
+                  <p>
+                    <b>Phone:</b>
+                    ${d.phone}
+                  </p>
+
+                  <p>
+                    <b>Email:</b>
+                    ${d.email}
+                  </p>
+
+                  <p>
+                    <b>City:</b>
+                    ${d.city}
+                  </p>
+
+                  <button
+                    class="btn"
+                    onclick="deleteDonor('${d._id}')"
+                  >
+                    Delete
+                  </button>
+
+                </div>
+
+              `
+            )
+            .join('')
+        }
+
+      </div>
+
+    `;
+
+  }
+  catch(err){
+
+    box.innerHTML = `
+
+      <div class="card">
+
+        <p style="color:var(--muted)">
+          ${err.message}
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+async function saveDonor(donor){
+
+  const r =
+    await fetch(
+      '/api/donors',
+      {
+        method:'POST',
+
+        headers:{
+          'Content-Type':
+            'application/json'
+        },
+
+        body:JSON.stringify(donor)
+      }
+    );
+
+
+  const data =
+    await r.json();
+
+
+  if(!r.ok){
+
+    throw new Error(
+      data.message ||
+      'Unable to save donor'
+    );
+
+  }
+
+
+  await showDonors();
+
+  return data.donor;
+
+}
+
+
+async function deleteDonor(id){
+
+  try{
+
+    const r =
+      await fetch(
+        '/api/donors/' +
+        encodeURIComponent(id),
+        {
+          method:'DELETE'
+        }
+      );
+
+
+    const data =
+      await r.json();
+
+
+    if(!r.ok){
+
+      throw new Error(
+        data.message ||
+        'Unable to delete donor'
+      );
+
+    }
+
+
+    await showDonors();
+
+  }
+  catch(err){
+
+    alert(err.message);
+
+  }
+
+}
+
+
+async function showRequests(){
+
+  const box =
+    document.getElementById(
+      'requestList'
+    );
+
+
+  try{
+
+    const r =
+      await fetch(
+        '/api/requests'
+      );
+
+
+    const data =
+      await r.json();
+
+
+    if(!r.ok){
+
+      throw new Error(
+        data.message ||
+        'Unable to load requests'
+      );
+
+    }
+
+
+    const requests =
+      data.requests || [];
+
+
+    if(!requests.length){
+
+      box.innerHTML = `
+
+        <div class="card">
+
+          <p style="color:var(--muted)">
+            No blood requests saved yet.
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    box.innerHTML = `
+
+      <div class="grid">
+
+        ${
+          requests
+            .map(
+              q => `
+
+                <div class="card">
+
+                  <div class="group">
+                    ${q.patientName}
+                  </div>
+
+                  <p>
+                    <b>Blood group:</b>
+                    ${q.bloodGroup}
+                  </p>
+
+                  <p>
+                    <b>Units:</b>
+                    ${q.units}
+                  </p>
+
+                  <p>
+                    <b>Hospital:</b>
+                    ${q.hospital}
+                  </p>
+
+                  <p>
+                    <b>Contact:</b>
+                    ${q.contact}
+                  </p>
+
+                  <button
+                    class="btn"
+                    onclick="deleteRequest('${q._id}')"
+                  >
+                    Delete
+                  </button>
+
+                </div>
+
+              `
+            )
+            .join('')
+        }
+
+      </div>
+
+    `;
+
+  }
+  catch(err){
+
+    box.innerHTML = `
+
+      <div class="card">
+
+        <p style="color:var(--muted)">
+          ${err.message}
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+async function saveRequest(request){
+
+  const r =
+    await fetch(
+      '/api/requests',
+      {
+        method:'POST',
+
+        headers:{
+          'Content-Type':
+            'application/json'
+        },
+
+        body:JSON.stringify(request)
+      }
+    );
+
+
+  const data =
+    await r.json();
+
+
+  if(!r.ok){
+
+    throw new Error(
+      data.message ||
+      'Unable to save request'
+    );
+
+  }
+
+
+  await showRequests();
+
+  return data.request;
+
+}
+
+
+async function deleteRequest(id){
+
+  try{
+
+    const r =
+      await fetch(
+        '/api/requests/' +
+        encodeURIComponent(id),
+        {
+          method:'DELETE'
+        }
+      );
+
+
+    const data =
+      await r.json();
+
+
+    if(!r.ok){
+
+      throw new Error(
+        data.message ||
+        'Unable to delete request'
+      );
+
+    }
+
+
+    await showRequests();
+
+  }
+  catch(err){
+
+    alert(err.message);
+
+  }
+
+}
+
+
+/* ================= MODAL ================= */
+
+function openModal(type){
+
+  const titles = {
+
+    donor:'Become a Donor',
+
+    request:'Request Blood',
+
+    login:'Login',
+
+    signup:'Create Account'
+
+  };
+
+
+  document
+    .getElementById(
+      'modalTitle'
+    )
+    .textContent =
+      titles[type] ||
+      'Blood Bank';
+
+
+  const form =
+    document.querySelector(
+      '#modal form'
+    );
+
+
+  /* LOGIN FORM */
+
+  if(type === 'login'){
+
+    form.innerHTML = `
+
+      <input
+        required
+        type="email"
+        placeholder="Email"
+      >
+
+      <input
+        required
+        type="password"
+        placeholder="Password"
+      >
+
+      <button
+        class="btn primary"
+        type="submit"
+      >
+        Login
+      </button>
+
+      <p
+        style="
+          margin:0;
+          color:var(--muted);
+          text-align:center;
+        "
+      >
+        Don't have an account?
+
+        <a
+          href="/signup.html"
+          style="
+            color:var(--red);
+            font-weight:700;
+          "
+        >
+          Sign Up
+        </a>
+
+      </p>
+
+    `;
+
+  }
+
+
+  /* DONOR FORM */
+
+  else if(type === 'donor'){
+
+    form.innerHTML = `
+
+      <div class="row">
+
+        <input
+          required
+          placeholder="Full name"
+        >
+
+        <input
+          required
+          placeholder="Phone number"
+        >
+
+      </div>
+
+
+      <div class="row">
+
+        <select required>
+
+          <option value="">
+            Blood group
+          </option>
+
+          <option>O+</option>
+          <option>O-</option>
+          <option>A+</option>
+          <option>A-</option>
+          <option>B+</option>
+          <option>B-</option>
+          <option>AB+</option>
+          <option>AB-</option>
+
+        </select>
+
+
+        <input
+          required
+          placeholder="City"
+        >
+
+      </div>
+
+
+      <input
+        required
+        type="email"
+        placeholder="Email"
+      >
+
+
+      <button
+        class="btn primary"
+        type="submit"
+      >
+        Register
+      </button>
+
+    `;
+
+  }
+
+
+  /* BLOOD REQUEST FORM */
+
+  else if(type === 'request'){
+
+    form.innerHTML = `
+
+      <input
+        required
+        placeholder="Patient name"
+      >
+
+
+      <div class="row">
+
+        <select required>
+
+          <option value="">
+            Blood group
+          </option>
+
+          <option>O+</option>
+          <option>O-</option>
+          <option>A+</option>
+          <option>A-</option>
+          <option>B+</option>
+          <option>B-</option>
+          <option>AB+</option>
+          <option>AB-</option>
+
+        </select>
+
+
+        <input
+          required
+          type="number"
+          min="1"
+          placeholder="Units required"
+        >
+
+      </div>
+
+
+      <input
+        required
+        placeholder="Hospital name"
+      >
+
+
+      <input
+        required
+        placeholder="Contact number"
+      >
+
+
+      <input
+        required
+        placeholder="Hospital address"
+      >
+
+
+      <button
+        class="btn primary"
+        type="submit"
+      >
+        Submit Request
+      </button>
+
+    `;
+
+  }
+
+
+  document
+    .getElementById('modal')
+    .classList
+    .add('open');
+
+}
+
+
+function closeModal(){
+
+  document
+    .getElementById('modal')
+    .classList
+    .remove('open');
+
+}
+
+
+/* ================= FORM SUBMIT ================= */
+
+async function submitForm(e){
+
+  e.preventDefault();
+
+
+  const title =
+    document
+      .getElementById(
+        'modalTitle'
+      )
+      .textContent;
+
+
+  /* LOGIN */
+
+  if(title === 'Login'){
+
+    const inputs =
+      e.target.querySelectorAll(
+        'input'
+      );
+
+
+    try{
+
+      const r =
+        await fetch(
+          '/api/login',
+          {
+            method:'POST',
+
+            headers:{
+              'Content-Type':
+                'application/json'
+            },
+
+            body:JSON.stringify({
+
+              email:inputs[0].value,
+
+              password:inputs[1].value
+
+            })
+
+          }
+        );
+
+
+      const data =
+        await r.json();
+
+
+      if(!r.ok){
+
+        throw new Error(
+          data.message ||
+          'Login failed'
+        );
+
+      }
+
+
+      localStorage.setItem(
+        'lifedropUser',
+        JSON.stringify(
+          data.user || data
+        )
+      );
+
+
+      closeModal();
+
+
+      window.location.href =
+        '/dashboard.html';
+
+    }
+    catch(err){
+
+      alert(err.message);
+
+    }
+
+  }
+
+
+  /* DONOR */
+
+  else if(
+    title === 'Become a Donor'
+  ){
+
+    if(!isLoggedIn()){
+
+      alert(
+        'Please login or sign up first. Your form has not been submitted.'
+      );
+
+      return;
+
+    }
+
+
+    const inputs =
+      e.target.querySelectorAll(
+        'input'
+      );
+
+    const select =
+      e.target.querySelector(
+        'select'
+      );
+
+
+    try{
+
+      await saveDonor({
+
+        name:inputs[0].value,
+
+        phone:inputs[1].value,
+
+        bloodGroup:select.value,
+
+        city:inputs[2].value,
+
+        email:inputs[3].value
+
+      });
+
+
+      closeModal();
+
+
+      alert(
+        'Donor registration saved successfully in MongoDB.'
+      );
+
+
+      go('donors');
+
+    }
+    catch(err){
+
+      alert(err.message);
+
+    }
+
+  }
+
+
+  /* BLOOD REQUEST */
+
+  else if(
+    title === 'Request Blood'
+  ){
+
+    if(!isLoggedIn()){
+
+      alert(
+        'Please login or sign up first. Your form has not been submitted.'
+      );
+
+      return;
+
+    }
+
+
+    const inputs =
+      e.target.querySelectorAll(
+        'input'
+      );
+
+    const select =
+      e.target.querySelector(
+        'select'
+      );
+
+
+    try{
+
+      await saveRequest({
+
+        patientName:
+          inputs[0].value,
+
+        bloodGroup:
+          select.value,
+
+        units:
+          Number(inputs[1].value),
+
+        hospital:
+          inputs[2].value,
+
+        contact:
+          inputs[3].value,
+
+        address:
+          inputs[4].value
+
+      });
+
+
+      closeModal();
+
+
+      alert(
+        'Blood request saved successfully in MongoDB.'
+      );
+
+
+      go('requests');
+
+    }
+    catch(err){
+
+      alert(err.message);
+
+    }
+
+  }
+
+}
+
+
+/* ================= PAGE LOAD ================= */
+
+window.addEventListener(
+  'load',
+  () => {
+
+    const u =
+      localStorage.getItem(
+        'lifedropUser'
+      );
+
+
+    if(u){
+
+      try{
+
+        showDashboard(
+          JSON.parse(u).name ||
+          'User'
+        );
+
+      }
+      catch(e){}
+
+    }
+
+  }
+);
+
+
+window.addEventListener(
+  'load',
+  () => {
+
+    showDonors();
+    showRequests();
+
+  }
+);
+
+
+/* CLOSE MODAL WHEN CLICKING OUTSIDE */
+
+document
+  .getElementById('modal')
+  .addEventListener(
+    'click',
+    e => {
+
+      if(
+        e.target.id === 'modal'
+      ){
+
+        closeModal();
+
+      }
+
+    }
+  );
+
+</script>
+
+</body>
+</html>
