@@ -2080,12 +2080,12 @@ async function startServer() {
     console.log(
       "MongoDB connected successfully."
     );
-
-    await transporter.verify();
-
-    console.log(
-      "Email transporter ready."
-    );
+    // Email verification is skipped during server startup.
+   // Gmail will still be used when OTP emails are sent.
+  console.log(
+    "Email transporter configured."
+             );
+    
 
     app.listen(
       PORT,
